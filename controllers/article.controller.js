@@ -91,10 +91,7 @@ const getHomepageArticles = async (req, res, next) => {
   try {
     const type = req.query.type
     const homepageData = await articleService.getHomepageArticles(type)
-    // res.status(200).json({
-    //   success: true,
-    //   data: homepageData,
-    // });
+    
     return homepageData
   } catch (error) {
     next(error)

@@ -1,19 +1,41 @@
 {{!-- articles/list.hbs --}}
-<div class="container mx-auto px-4 md:px-8 lg:px-16 py-8">
-  <!-- Dynamic Title -->
-  <h1 class="text-4xl font-extrabold text-gray-800 mb-6 text-center">
-    {{#if title}}{{title}}{{else}}Articles{{/if}}
+<div class="container mx-auto py-8">
+  {{!-- Dynamic Title --}}
+  <h1 class="text-3xl md:text-4xl font-bold mb-14">
+    {{#if query}}Search Results for "{{query}}"{{else}}Articles{{/if}}
   </h1>
 
-  <!-- Articles List -->
-  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-    {{#if articles.length}} {{#each articles}} {{> article-item article=this}} {{/each}} {{else}}
-    <p class="text-center text-gray-500 col-span-full">No articles found.</p>
+  <form action="/articles/filter" method="GET" class="w-full my-20">
+    <label class="input focus:border-2 h-14 border-black flex items-center justify-between">
+      {{#if query}}<input type="text" name="keyword" placeholder="{{querty}}" class="grow" /> {{else}}
+      <input type="text" name="keyword" placeholder="Search..." class="grow" /> {{/if}}
+      <button type="submit" class="btn btn-square ml-20">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 16 16"
+          fill="currentColor"
+          class="h-3 w-3 opacity-70"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
+            clip-rule="evenodd"
+          />
+        </svg>
+      </button>
+    </label>
+  </form>
+
+  {{!-- Articles List --}}
+  <div class="space-y-6">
+    {{#if (hasItems articles)}} {{#each articles}} {{!-- Render each article --}} {{>
+    article/tag-article this}} {{/each}} {{else}}
+    <p class="text-center text-gray-500">
+      {{#if query}} No articles found matching your search criteria. {{else}} No articles found.
+      {{/if}}
+    </p>
     {{/if}}
   </div>
 
-  <!-- Pagination -->
-  <div class="mt-8 flex justify-center">
-    {{> pagination currentPage=currentPage totalPages=totalPages query=query}}
-  </div>
+  {{!-- Pagination --}} {{> pagination currentPage=currentPage totalPages=totalPages query=query}}
 </div>

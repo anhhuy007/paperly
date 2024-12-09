@@ -1,21 +1,21 @@
 {{!-- views/partials/article/tag-article.hbs --}}
 <div class="flex flex-col gap-4">
   <div class="relative group">
-    <a href="/articles/{{ article.id }}" class="absolute inset-0"></a>
+    <a href="/articles/{{ id }}" class="absolute inset-0"></a>
 
-    <div class="grid grid-cols-[10%_45%_10%_35%]">
+    <div class="grid grid-cols-[10%_45%_5%_40%]">
       {{!-- Published Date --}}
-      <span>{{ formatDate article.published_at}}</span>
+      <span>{{ formatDate published_at}}</span>
 
       <div class="flex flex-col h-full">
         {{!-- Title --}}
         <h2 class="text-3xl font-bold mb-4 group-hover:underline">
-          {{ default article.title "Untitled Article" }}
+          {{ default title "Untitled Article" }}
         </h2>
 
         {{!-- Abstract --}}
         <p class="text-gray-700 mb-6 text-xl">
-          {{ default article.abstract "No summary available for this article." }}
+          {{ default abstract "No summary available for this article." }}
         </p>
 
         {{!-- Tags --}}
@@ -29,25 +29,27 @@
           {{/if}}
         </div>
 
-        {{!-- Category --}}
+        {{!-- Category --}} {{#if category}}
         <a
           href="categories/{{ default article.category_id '#' }}"
           class="text-blue-500 hover:underline text-xl z-20 mt-auto"
         >
-          {{ default article.category "Uncategorized" }}
+          {{category.name}}
         </a>
+        {{/if}}
       </div>
 
       <div></div>
 
-      {{!-- Thumbnail --}}
+      {{!-- Thumbnail --}} {{#if thumbnail}}
       <div>
         <img
-          src="{{ default article.thumbnail '/images/default-thumbnail.jpg' }}"
-          alt="{{ default article.title 'Untitled Article' }}"
-          class="w-full h-64 aspect-[16/9] object-cover rounded-lg"
+          src="{{thumbnail}}"
+          alt="{{title}}"
+          class="w-full h-64 aspect-[16/9] object-cover rounded-lg border-2"
         />
       </div>
+      {{/if}}
     </div>
   </div>
   <div class="border"></div>

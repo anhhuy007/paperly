@@ -147,3 +147,8 @@ Handlebars.registerHelper('ifActive', function (path, options) {
   const currentPath = options.data.root.currentPath || ''
   return currentPath.includes(path) ? options.fn(this) : options.inverse(this)
 })
+
+Handlebars.registerHelper('split', function (input, delimiter) {
+  if (typeof input !== 'string') return []
+  return input.split(delimiter)
+})

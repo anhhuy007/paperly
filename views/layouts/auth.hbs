@@ -30,7 +30,8 @@
 
     <script defer>
       document.addEventListener('DOMContentLoaded', function () {
-        const form = document.getElementById('loginForm')
+        // handle form submission (login and signup)
+        const form = document.getElementById('loginForm') || document.getElementById('signupForm')
         const submitButton = document.getElementById('submitButton')
         const loadingTemplate = Handlebars.compile(
           document.getElementById('loading-template').innerHTML,

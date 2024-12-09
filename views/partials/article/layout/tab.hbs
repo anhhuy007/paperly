@@ -1,18 +1,20 @@
 {{!-- views/partials/article/layout/tab.hbs --}}
 <div role="tablist" class="tabs tabs-bordered border-2 tabs-lg rounded-xl shadow-2xl">
   {{#each articles}}
-  <input
-    type="radio"
-    name="my_tabs_2"
-    role="tab"
-    class="tab inline-block whitespace-nowrap {{#if @first}}checked{{/if}}"
-    aria-label="{{ default this.category 'Uncategorized' }}"
-    {{#if @first}}checked="checked"{{/if}}
-  />
-  <div role="tabpanel" class="tab-content bg-base-100 border-base-300 rounded-box p-6">
-    {{!-- Render super-large article for each tab --}}
-    {{> article/super-large-article article=this}}
-  </div>
+    {{#if (lt @index 10)}} 
+      <input
+        type="radio"
+        name="my_tabs_2"
+        role="tab"
+        class="tab max-w-32 whitespace-nowrap {{#if @first}}checked{{/if}}"
+        aria-label="{{ default this.category 'Uncategorized' }}"
+        {{#if @first}}checked="checked"{{/if}}
+      />
+      <div role="tabpanel" class="tab-content bg-base-100 border-base-300 rounded-box p-6">
+        {{!-- Render super-large article for each tab --}}
+        {{> article/super-large-article article=this}}
+      </div>
+    {{/if}}
   {{/each}}
 </div>
 

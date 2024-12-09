@@ -1,43 +1,37 @@
 {{!-- views/partials/category-menu.hbs --}}
-<ul class="menu menu-horizontal px-1">
-  <li>
-    <a href="/" class="{{#if (eq currentCategoryId -1)}}active{{/if}}">Home</a>
-  </li>
-  {{#each categories}} {{#if subcategories}}
-  <li tabindex="0">
-    <a class="{{#if (eq id ../currentCategoryId)}}active{{/if}}">
-      {{name}}
-      <svg
-        class="fill-current"
-        xmlns="http://www.w3.org/2000/svg"
-        width="12"
-        height="12"
-        viewBox="0 0 24 24"
-      >
-        <path d="M6 9l6 6 6-6"></path>
-      </svg>
-    </a>
-    <ul class="p-2 bg-base-100">
-      {{#each subcategories}}
-      <li>
-        <a
-          href="/articles/categories/{{subId}}"
-          class="{{#if (eq id ../../currentCategoryId)}}active{{/if}}"
-        >
-          {{name}}
-        </a>
-      </li>
-      {{/each}}
-    </ul>
-  </li>
-  {{else}}
-  <li>
+<div class="w-full flex flex-col z-50 bg-base-100">
+  <div class="flex gap-4 items-center justify-center">
     <a
-      href="/articles/categories/{{id}}"
-      class="{{#if (eq id ../currentCategoryId)}}active{{/if}}"
+      href="/"
+      class="p-2 rounded-xl btn-ghost text-base font-bold 
+          {{#if (eq currentCategoryId -1)}}
+            border-b-4 border-b-black
+          {{/if}}"
     >
-      {{name}}
+      Homepage
     </a>
-  </li>
+    {{#each categories}}
+    <a
+      href="/categories/{{ id }}"
+      class="btn btn-ghost text-lg font-bold {{#if (or (eq id ../currentCategoryId) (hasSubCategorySelected subCategories ../currentCategoryId))}} border-b-4 border-b-black {{/if}}"
+    >
+      {{ category }}
+    </a>
+    {{/each}}
+  </div>
+
+  <div class="border-t-2 border-gray-200 flex-1 w-full"></div>
+  {{#each categories}} {{#if (or (eq id ../currentCategoryId) (hasSubCategorySelected subCategories
+  ../currentCategoryId))}}
+  <div class="flex gap-4 justify-center items-center">
+    {{#each subCategories}}
+    <a
+      href="/categories/{{ subId }}"
+      class="btn btn-ghost text-base font-medium {{#if (eq subId ../../currentCategoryId)}} border-b-4 border-b-red-500 {{/if}}"
+    >
+      {{ name }}
+    </a>
+    {{/each}}
+  </div>
   {{/if}} {{/each}}
-</ul>
+</div>

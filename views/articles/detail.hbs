@@ -1,89 +1,103 @@
 {{!-- views/articles/detail.hbs --}}
-<div class="container mx-auto px-4 md:px-8 lg:px-16 py-8">
-  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-    {{!-- Main Content --}}
-    <div class="lg:col-span-2 space-y-8">
-      {{!-- Article Card --}}
-      <article class="card bg-base-100 shadow-xl">
-        {{#if article.thumbnail}}
-        <figure>
-          <img
-            src="{{article.thumbnail}}"
-            alt="{{default article.title 'Article Thumbnail'}}"
-            class="w-full h-64 object-cover"
-          />
-        </figure>
-        {{/if}}
-        <div class="card-body">
-          <h1 class="card-title text-3xl font-bold">
-            {{default article.title 'Untitled Article'}}
-          </h1>
-          <p class="text-sm text-gray-500 mb-4">
+<div class="flex flex-col gap-24 container mx-auto py-8">
+  {{!-- Main Content --}}
+    {{!-- Article Card --}}
+    <div class="px-32 space-y-6 ">
+      {{!-- General Information --}}
+      <div class="flex flex-col gap-6 px-32 ">
+        <h1 class="text-5xl font-extrabold ">{{default article.title 'Untitled Article'}}</h1>
+        <div class="flex justify-between">
+          <div class="flex gap-2 items-center">
+            <span class="text-gray-500">{{formatDate article.published_at}}</span>
             {{#if article.category}}
-            <a href="/categories/{{article.category.id}}" class="link">
-              {{article.category.name}}
-            </a>
-            <span class="mx-2">|</span>
-            {{/if}} {{formatDate article.published_at}}
-          </p>
-          <div class="flex flex-wrap gap-2 mb-4">
-            {{#each article.tags as |tag|}}
-            <a href="/tags/{{tag.id}}" class="badge badge-outline">#{{tag.name}}</a>
-            {{/each}}
+           <a href="/categories/{{article.category.id}}" class="link"> {{article.category.name}} </a>
+            {{/if}}
           </div>
-          <div class="prose max-w-none">{{{default article.content 'No content available.'}}}</div>
+          {{!-- Share and save button --}}
+          <div class="flex gap-2">
+           <button class="btn btn-outline space-x-2">
+              Save
+              <svg class="w-4 h-4" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M11 6C12.6569 6 14 4.65685 14 3C14 1.34315 12.6569 0 11 0C9.34315 0 8 1.34315 8 3C8 3.22371 8.02449 3.44169 8.07092 3.65143L4.86861 5.65287C4.35599 5.24423 3.70652 5 3 5C1.34315 5 0 6.34315 0 8C0 9.65685 1.34315 11 3 11C3.70652 11 4.35599 10.7558 4.86861 10.3471L8.07092 12.3486C8.02449 12.5583 8 12.7763 8 13C8 14.6569 9.34315 16 11 16C12.6569 16 14 14.6569 14 13C14 11.3431 12.6569 10 11 10C10.2935 10 9.644 10.2442 9.13139 10.6529L5.92908 8.65143C5.97551 8.44169 6 8.22371 6 8C6 7.77629 5.97551 7.55831 5.92908 7.34857L9.13139 5.34713C9.644 5.75577 10.2935 6 11 6Z" fill="#000000"></path> </g></svg>
+            </button>
+
+            <button class="btn btn-outline space-x-2">
+              Share
+              <svg class="h-4 w-4" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>save-floppy</title> <desc>Created with Sketch Beta.</desc> <defs> </defs> <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage"> <g id="Icon-Set-Filled" sketch:type="MSLayerGroup" transform="translate(-154.000000, -517.000000)" fill="#000000"> <path d="M172,522 C172,521.447 172.448,521 173,521 C173.552,521 174,521.447 174,522 L174,526 C174,526.553 173.552,527 173,527 C172.448,527 172,526.553 172,526 L172,522 L172,522 Z M163,529 L177,529 C177.552,529 178,528.553 178,528 L178,517 L162,517 L162,528 C162,528.553 162.448,529 163,529 L163,529 Z M182,517 L180,517 L180,529 C180,530.104 179.104,531 178,531 L162,531 C160.896,531 160,530.104 160,529 L160,517 L158,517 C155.791,517 154,518.791 154,521 L154,545 C154,547.209 155.791,549 158,549 L182,549 C184.209,549 186,547.209 186,545 L186,521 C186,518.791 184.209,517 182,517 L182,517 Z" id="save-floppy" sketch:type="MSShapeGroup"> </path> </g> </g> </g></svg>            </button>
+          </div>  
         </div>
-      </article>
-
-      {{!-- Comments Section --}}
-      <section id="comments" class="space-y-6">
-        <h2 class="text-2xl font-bold">Comments</h2>
-
-        {{#if user}} {{!-- Comment Form --}}
-        <form
-          id="comment-form"
-          action="/articles/{{article.id}}/comments"
-          method="POST"
-          class="space-y-4"
-        >
-          <div class="form-control">
-            <label class="label">
-              <span class="label-text">Your Comment</span>
-            </label>
-            <textarea
-              name="content"
-              class="textarea textarea-bordered w-full"
-              placeholder="Write your comment here..."
-              required
-            ></textarea>
-          </div>
-          <button type="submit" class="btn btn-primary">Submit Comment</button>
-        </form>
-        {{else}}
-        <p>
-          <a href="/auth/login" class="link">Login</a> or
-          <a href="/auth/register" class="link">Register</a> to post a comment.
-        </p>
-        {{/if}} {{!-- Comments List --}}
-        <div class="space-y-4">
-          {{#each comments as |comment|}} {{> comment-item comment}} {{else}}
-          <p class="text-gray-500">No comments yet. Be the first to comment!</p>
+      <div class="flex flex-wrap gap-2 mb-4">
+          {{#each article.tags as |tag|}}
+          <a href="filter?tagId={{tag.id}}" class="badge badge-outline">#{{tag.name}}</a>
           {{/each}}
         </div>
-      </section>
+      </div>
+      {{#if article.thumbnail}}
+      <figure>
+        <img
+          src="{{article.thumbnail}}"
+          alt="{{default article.title 'Article Thumbnail'}}"
+          class="w-[120%] aspect-[16/9] object-cover"
+        />
+      </figure>
+      {{/if}}
+      <div class="px-32">
+        {{!-- Content --}}
+        <div class="prose text-pretty space-y-4">
+          {{#if article.content}} {{#each (split article.content '\n') as |paragraph|}}
+          <div class="border-b border-gray-300 pb-2">{{paragraph}}</div>
+          {{/each}} {{else}}
+          <div>No content available.</div>
+          {{/if}}
+        </div>
+      </div>
     </div>
 
-    {{!-- Sidebar --}}
-    <aside class="space-y-8">
-      {{!-- Related Articles --}}
+    {{!-- Comments Section --}}
+    <section id="comments" class="space-y-6">
+      <div class="border-2 border-black"></div>
+      <h2 class="text-4xl font-bold">Comments</h2>
+      {{#if user}} {{!-- Comment Form --}}
+      <form
+        id="comment-form"
+        action="/articles/{{article.id}}/comments"
+        method="POST"
+        class="space-y-4"
+      >
+        <div class="form-control">
+          <label class="label">
+            <span class="label-text">Your Comment</span>
+          </label>
+          <textarea
+            name="content"
+            class="textarea textarea-bordered w-full"
+            placeholder="Write your comment here..."
+            required
+          ></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit Comment</button>
+      </form>
+      {{else}}
+      <p>
+        <a href="/auth/login" class="link">Login</a> or
+        <a href="/auth/register" class="link">Register</a> to post a comment.
+      </p>
+      {{/if}} {{!-- Comments List --}}
+      <div class="space-y-4">
+        {{#each comments as |comment|}} {{> comment-item comment}} {{else}}
+        <p class="text-gray-500">No comments yet. Be the first to comment!</p>
+        {{/each}}
+      </div>
+    </section>
+
+    {{!-- Related Articles --}}
       <section>
-        <h2 class="text-xl font-bold mb-4">Related Articles</h2>
+        <div class="border-2 border-black"></div>
+        <h2 class="text-4xl font-bold mb-14">Related Articles</h2>
         <div class="space-y-4">
-          {{#each relatedArticles}} {{> article-item this}} {{else}}
+          {{#each relatedArticles}} {{> article/tag-article this}} {{else}}
           <p class="text-gray-500">No related articles available.</p>
           {{/each}}
         </div>
       </section>
-    </aside>
   </div>
 </div>
